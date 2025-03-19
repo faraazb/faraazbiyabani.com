@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import { Header } from "@components/header";
 import Footer from "@components/Footer.astro";
 import CommonSeo from "@seo/Common.astro";
@@ -23,7 +23,7 @@ const isProduction = import.meta.env.PROD;
     {isProduction ? <link rel="sitemap" href="/sitemap-index.xml" /> : null}
     <title>{title}</title>
     <CommonSeo title={title} />
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body>
     <div class="root">
@@ -120,6 +120,7 @@ const isProduction = import.meta.env.PROD;
       isProduction ? (
         <>
           <script
+            is:inline
             async
             defer
             src="https://simple.faraazbiyabani.me/latest.js"
