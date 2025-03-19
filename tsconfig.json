@@ -1,31 +1,18 @@
 {
   "extends": "astro/tsconfigs/strict",
+  "include": ["src"],
   "compilerOptions": {
     "baseUrl": ".",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@components/*": [
-        "./src/components/*"
-      ],
-      "@icons/*": [
-        "./src/icons/*"
-      ],
-      "@styles/*": [
-        "./src/styles/*"
-      ],
-      "@layouts/*": [
-        "./src/layouts/*"
-      ],
-      "@sections/*": [
-        "./src/sections/*"
-      ],
-      "@content/*": [
-        "./src/content/*"
-      ],
-      "@seo/*": [
-        "./src/seo/*"
-      ],
+      "@components/*": ["./src/components/*"],
+      "@icons/*": ["./src/icons/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@sections/*": ["./src/sections/*"],
+      "@content/*": ["./src/content/*"],
+      "@seo/*": ["./src/seo/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
