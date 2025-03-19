@@ -4,9 +4,10 @@ import { experience } from "@sections/experience/experience.schema";
 import { project } from "@sections/projects/project.schema";
 import { skills } from "@sections/skills/skills.schema";
 import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
 
-const pagesCollection = defineCollection({
-  type: "data",
+const pages = defineCollection({
+  loader: glob({ pattern: "*.json", base: "./src/content/pages" }),
   schema: ({ image }) =>
     z.object({
       sections: z.object({
@@ -20,12 +21,12 @@ const pagesCollection = defineCollection({
     }),
 });
 
-const projectsCollection = defineCollection({
-  type: "content",
+const projects = defineCollection({
+  loader: glob({ pattern: "*.md", base: "./src/content/projects" }),
   schema: ({ image }) => project({ image }),
 });
 
 export const collections = {
-  pages: pagesCollection,
-  projects: projectsCollection,
+  pages,
+  projects,
 };

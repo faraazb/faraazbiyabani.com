@@ -60,7 +60,7 @@ const { title, bio, links, picture } = data;
 
   #home {
     display: grid;
-    grid-template-columns: 0.95fr 250px;
+    grid-template-columns: 0.95fr 400px;
     grid-column-gap: 25px;
     place-content: center;
     @include query.media("<=tablet") {
@@ -77,11 +77,13 @@ const { title, bio, links, picture } = data;
     @include query.media("<=tablet") {
       margin-bottom: 20px;
       width: 100%;
-      max-width: 150px;
+      /* max-width: 150px; */
+      max-width: 250px;
       grid-row-start: 1;
       grid-column-start: 1;
-      border-radius: 50%;
-      border-style: dashed;
+      /* border-radius: 50%;
+      border-style: dashed; */
+      border-style: solid;
     }
   }
 
@@ -89,9 +91,9 @@ const { title, bio, links, picture } = data;
     height: 100%;
     width: 100%;
     object-fit: cover;
-    @include query.media("<=tablet") {
+    /* @include query.media("<=tablet") {
       border-radius: 50%;
-    }
+    } */
   }
 
   .hello > .subtitle-1 {

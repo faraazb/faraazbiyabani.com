@@ -1,7 +1,7 @@
 @use "include-media/dist/include-media" as query with (
   $breakpoints: (
     phone: 450px,
-    tablet: 810px,
+    tablet: 768px,
     desktop: 1024px,
   )
 );
