@@ -2,7 +2,7 @@
   "sections": {
     "about": {
       "title": "Hello!",
-      "bio": "I am Faraaz Biyabani, a software tinkerer and associate software engineer at Contentstack. I enjoy exploring new tools and leveraging them to build practical and useful things. I am passionate about the web and a fan of open source software.",
+      "bio": "I am Faraaz Biyabani, a software engineer at Contentstack. I enjoy exploring new tools and leveraging them to build practical and useful things. I am passionate about the web and a fan of open source software.",
       "picture": {
         "src": "../../assets/images/faraaz.png",
         "alt": "Faraaz Biyabani"
