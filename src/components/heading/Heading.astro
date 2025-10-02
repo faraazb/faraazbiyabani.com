@@ -1,0 +1,65 @@
+---
+import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"h1"> {
+  level: HeadingLevel;
+}
+
+// Extract heading elements from available HTML elements
+type HeadingElements = Extract<
+  keyof astroHTML.JSX.DefinedIntrinsicElements,
+  `h${number}`
+>;
+
+// Extract the numeric levels from heading element names (e.g., "h1" -> 1, "h2" -> 2)
+type HeadingLevel = HeadingElements extends `h${infer N extends number}`
+  ? N
+  : never;
+
+const { level = 1, ...props } = Astro.props;
+
+const Tag = `h${level}` as HeadingElements;
+---
+
+<Tag {...props}>
+  {
+    level === 1 ? (
+      <slot />
+    ) : (
+      <a class="heading" href={`#${props.id}`}>
+        <slot />
+        {level > 1 ? <Icon size={18} name={"ph:link"} /> : null}
+      </a>
+    )
+  }
+</Tag>
+
+<style lang="scss">
+  @use "@styles/variables" as variables;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    svg {
+      visibility: hidden;
+      fill: variables.$color-neutral-30;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover {
+      svg {
+        visibility: visible;
+      }
+    }
+  }
+
+  .heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+</style>

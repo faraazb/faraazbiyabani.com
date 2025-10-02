@@ -3,6 +3,14 @@ import preact from "@astrojs/preact";
 
 import sitemap from "@astrojs/sitemap";
 
+import mdx from "@astrojs/mdx";
+
+import icon from "astro-icon";
+
+import expressiveCode from "astro-expressive-code";
+import { createInlineSvgUrl } from "astro-expressive-code";
+import { expressiveCodeCursor, expressiveCodeTerminal } from "./src/utils"
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
@@ -10,6 +18,23 @@ export default defineConfig({
       compat: true,
     }),
     sitemap(),
+    icon(),
+    expressiveCode({
+      plugins: [expressiveCodeTerminal(), expressiveCodeCursor()],
+      // themes: ["rose-pine-moon", "rose-pine-dawn"],
+      // themes: ["github-light", "github-dark-dimmed"],
+      // theme: ["rose-pine-dawn", "one-dark-pro"],
+      theme: ["rose-pine-dawn", "poimandres"],
+      themeCssSelector: (theme, { styleVariants }) => {
+        return `.${theme.type}`;
+      },
+      styleOverrides: {
+        frames: {
+          copyIcon: createInlineSvgUrl(`<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M216 32H88a8 8 0 0 0-8 8v40H40a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h128a8 8 0 0 0 8-8v-40h40a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8m-56 176H48V96h112Zm48-48h-32V88a8 8 0 0 0-8-8H96V48h112Z"/></svg>`),
+        }
+      }
+    }),
+    mdx()
   ],
   site: "https://faraazbiyabani.me",
 });

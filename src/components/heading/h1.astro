@@ -1,0 +1,10 @@
+---
+import type { HTMLAttributes } from "astro/types"
+import Heading from "./Heading.astro"
+
+interface Props extends HTMLAttributes<"h1"> {}
+---
+
+<Heading level={1} {...Astro.props}>
+  <slot />
+</Heading>
