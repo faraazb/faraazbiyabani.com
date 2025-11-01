@@ -1,84 +1,46 @@
-@use "@styles/variables" as *;
-@use "@styles/typography" as *;
+@use "variables" as v;
 
-@mixin light-theme {
-  color-scheme: light;
+@mixin theme {
+  // Theme variables
+  --background: light-dark(#{v.$neutral-50},
+    color-mix(in oklab, #{v.$neutral-900} 90%, #{v.$violet-950} 10%));
+  --foreground: light-dark(#{v.$neutral-950}, #{v.$neutral-50});
+  --card: light-dark(#{v.$neutral-50}, #{v.$neutral-950});
+  --card-foreground: light-dark(#{v.$neutral-950}, #{v.$neutral-50});
+  --popover: light-dark(#{v.$neutral-50}, #{v.$neutral-950});
+  --popover-foreground: light-dark(#{v.$neutral-950}, #{v.$neutral-50});
+  --primary: light-dark(#{v.$neutral-900}, #{v.$neutral-100});
+  --primary-foreground: light-dark(#{v.$neutral-100}, #{v.$neutral-900});
+  --secondary: light-dark(#{v.$neutral-100}, #{v.$neutral-925});
+  --secondary-foreground: light-dark(#{v.$neutral-900}, #{v.$neutral-100});
+  --accent: light-dark(#{v.$neutral-100}, #{v.$neutral-800});
+  --accent-foreground: light-dark(#{v.$neutral-900}, #{v.$neutral-100});
+  --destructive: light-dark(#{v.$red-500}, #{v.$red-700});
+  --destructive-foreground: light-dark(#{v.$neutral-100}, #{v.$neutral-100});
+  --border: light-dark(#{v.$neutral-200}, #{v.$neutral-800});
+  --border-mono: light-dark(#{v.$neutral-950}, #{v.$neutral-400});
+  --input: light-dark(#{v.$neutral-200}, #{v.$neutral-800});
+  --ring: light-dark(#{v.$neutral-400}, #{v.$neutral-300});
 
-  --text-primary: #{$light-text-primary};
-  --text-secondary: #{$light-text-secondary};
-  --background-primary: #{$light-background-primary};
-  --background-secondary: #{$light-background-secondary};
-  --border-primary: #{$black};
-  --button-border: #{$light-button-border};
-  --header-bg: rgba(255, 255, 255, 0.9);
-  --icon-button-hover: #{$light-theme-hover};
-  --icon-container-hover: #{$light-theme-icon-container-hover};
-
-  --blue-10: #{$light-theme-blue-10};
-  --green-10: #{$light-theme-green-10};
-  --green-20: #{$light-theme-green-20};
-  --green-30: #{$light-theme-green-30};
-  --green-40: #{$light-theme-green-40};
-  --yellow-10: #{$light-theme-yellow-10};
-  --yellow-20: #{$light-theme-yellow-20};
-  --yellow-30: #{$light-theme-yellow-30};
-  --pink-10: #{$light-theme-pink-10};
-  --pink-20: #{$light-theme-pink-20};
-  --pink-30: #{$light-theme-pink-30};
-  --cyan-10: #{$light-theme-cyan-10};
-  --cyan-20: #{$light-theme-cyan-20};
+  --button-border: light-dark(#{v.$neutral-300}, #{v.$neutral-700});
+  --header-bg: light-dark(oklch(1 0 0 / 90%),
+      oklch(0.275 0.0185 294.32 / 90%));
+  --icon-button-hover: light-dark(color-mix(in oklab, #{v.$neutral-200} 60%, transparent),
+    color-mix(in oklab, #{v.$neutral-600} 55%, transparent));
+  --icon-container-hover: light-dark(color-mix(in oklab, #{v.$neutral-300} 40%, transparent),
+    color-mix(in oklab, #{v.$neutral-500} 45%, transparent));
+  --link: light-dark(#{v.$blue-600}, #{v.$cyan-500});
+  --code-bg: light-dark(#{v.$slate-200}, #{v.$neutral-925});
 }
 
-@mixin dark-theme {
-  color-scheme: dark;
-
-  --text-primary: #{$dark-text-primary};
-  --text-secondary: #{$dark-text-secondary};
-  --background-primary: #{$dark-background-primary};
-  --background-secondary: #{$dark-background-secondary};
-  --border-primary: #{$dark-border-primary};
-  --button-border: #{$dark-button-border};
-  --header-bg: rgb(40, 38, 48, 0.9);
-
-  --icon-button-hover: #{$dark-theme-hover};
-  --icon-container-hover: #{$dark-theme-icon-container-hover};
-  --blue-10: #{$dark-theme-blue-10};
-  --green-10: #{$dark-theme-green-10};
-  --green-20: #{$dark-theme-green-20};
-  --green-30: #{$dark-theme-green-30};
-  --green-40: #{$dark-theme-green-40};
-  --yellow-10: #{$dark-theme-yellow-10};
-  --yellow-20: #{$dark-theme-yellow-20};
-  --yellow-30: #{$dark-theme-yellow-30};
-  --pink-10: #{$dark-theme-pink-10};
-  --pink-20: #{$dark-theme-pink-20};
-  --pink-30: #{$dark-theme-pink-30};
-  --cyan-10: #{$dark-theme-cyan-10};
-  --cyan-20: #{$dark-theme-cyan-20};
-}
-
-/*
-If 'light' or 'dark' class is present, use the corresponding scheme, otherwise use the
-browser color scheme.
-So, the theme toggle in the header simply acts as an override to prefers-color-scheme
-and doesn't use local storage assuming that one wouldn't use their  browser/system with
-light theme and want the website to use the dark theme.
-*/
 .light {
-  @include light-theme;
+  color-scheme: light;
 }
 
 .dark {
-  @include dark-theme;
+  color-scheme: dark;
 }
 
-// OS Default
-:root:not(.light):not(.dark) {
-  @media (prefers-color-scheme: light) {
-    @include light-theme;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    @include dark-theme;
-  }
+:root {
+  @include theme;
 }

@@ -38,34 +38,35 @@ const { title, accent, picture, links, description } = Astro.props;
 </div>
 
 <style lang="scss">
+  @use "@styles/variables" as v;
   .card {
     display: flex;
     flex-direction: column;
-    background: var(--background-secondary);
-    border: 1px solid var(--border-primary);
+    background: var(--secondary);
+    border: 1px solid light-dark(v.$neutral-950, v.$neutral-400);
     border-radius: 10px;
-    box-shadow: 10px 10px 0 var(--blue-10);
+    box-shadow: 10px 10px 0 light-dark(v.$cyan-200, v.$cyan-800);
     height: auto;
     max-width: 500px;
     min-width: 200px;
     min-height: 400px;
 
     &.pink {
-      box-shadow: 10px 10px 0 var(--pink-30);
+      box-shadow: 10px 10px 0 light-dark(v.$pink-300, v.$pink-800);
     }
 
     &.green {
-      box-shadow: 10px 10px 0 var(--green-40);
+      box-shadow: 10px 10px 0 light-dark(v.$emerald-200, v.$emerald-800);
     }
 
     &.yellow {
-      box-shadow: 10px 10px 0 var(--yellow-30);
+      box-shadow: 10px 10px 0 light-dark(v.$amber-200, v.$amber-800);
     }
   }
 
   .titlebar {
-    background: var(--background-secondary);
-    border-bottom: 1px solid var(--border-primary);
+    background: var(--secondary);
+    border-bottom: 1px solid light-dark(v.$neutral-950, v.$neutral-400);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     display: flex;
@@ -79,13 +80,13 @@ const { title, accent, picture, links, description } = Astro.props;
   .title {
     font-family: var(--font-sans-serif);
     font-size: 1.5rem;
-    color: var(--text-primary);
+    color: var(--foreground);
   }
 
   .description {
     line-height: 1.3;
     font-family: var(--font-sans-serif);
-    color: var(--text-primary);
+    color: var(--foreground);
   }
 
   .image {

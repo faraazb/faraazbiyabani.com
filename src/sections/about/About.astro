@@ -17,7 +17,7 @@ const { title, bio, links, picture } = data;
       <h1 class="header-1">{title}</h1>
       <p class="subtitle-1">{bio}</p>
       <div class="links">
-        <Link icon="mail" href={"/contact"}>Get in touch</Link>
+        <Link icon={"ph:envelope"} href={"/contact"} iconProps={{ size: 20 }}>Get in touch</Link>
         {
           links.map(({ title, url, icon }) => (
             <Link
@@ -27,11 +27,9 @@ const { title, bio, links, picture } = data;
               title={title}
               icon={icon}
               aria-label={title}
-              iconProps={{
-                presetSize: "medium",
-              }}
               target="_blank"
               rel="noreferrer"
+              iconProps={{ size: 24 }}
             />
           ))
         }
@@ -70,20 +68,14 @@ const { title, bio, links, picture } = data;
   }
 
   .photo {
-    // height: 100px;
-    // width: 100px;
-    border: 1px solid var(--border-primary);
+    border: 1px solid var(--border-mono);
     padding: 15px;
     @include query.media("<=tablet") {
       margin-bottom: 20px;
       width: 100%;
-      /* max-width: 150px; */
       max-width: 250px;
       grid-row-start: 1;
       grid-column-start: 1;
-      /* border-radius: 50%;
-      border-style: dashed; */
-      border-style: solid;
     }
   }
 
@@ -109,12 +101,6 @@ const { title, bio, links, picture } = data;
 
   .hello-links__icon {
     width: 25px;
-  }
-
-  .hello > .links > a > .accent-button {
-    border-radius: 20px;
-    border: 1px solid var(--text-primary);
-    box-shadow: 0 3px 0 var(--text-primary);
   }
 
   .link.link--icon {

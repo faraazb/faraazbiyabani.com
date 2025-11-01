@@ -1,5 +1,7 @@
 ---
 import Link from "@components/Link.astro";
+
+const ICON_SIZE = 20;
 ---
 
 <footer id="footer">
@@ -12,35 +14,46 @@ import Link from "@components/Link.astro";
   <div class="contact-links">
     <Link
       type="icon"
-      icon="github"
+      icon={"ph:github-logo"}
       aria-label="GitHub"
       href="https://github.com/faraazb"
       target="_blank"
+      iconProps={{ size: ICON_SIZE }}
     />
     <Link
       type="icon"
-      icon="linkedin"
+      icon={"ph:linkedin-logo"}
       aria-label="LinkedIn"
       href="https://linkedin.com/in/faraazb"
       target="_blank"
+      iconProps={{ size: ICON_SIZE }}
     />
     <Link
       type="icon"
-      icon="x"
+      icon={"ph:x-logo"}
       aria-label="X"
-      href="https://twitter.com/mfaraazb"
+      href="https://x.com/mfaraazb"
       target="_blank"
+      iconProps={{ size: ICON_SIZE }}
     />
   </div>
 </footer>
 
 <style lang="scss">
   @use "@styles/include-media" as query;
+  @use "@styles/variables" as v;
 
   #footer {
-    border-top: thin dashed var(--border-primary);
-    background-color: var(--background-secondary);
+    border-top: thin dashed light-dark(v.$neutral-950, v.$neutral-400);
+    background-color: var(--secondary);
     --lr-margins: 12%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    //centers item inline - wrt row
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: saturate(180%) blur(20px);
     @include query.media("<tablet") {
       --lr-margins: 8%;
       justify-content: center;
@@ -49,13 +62,6 @@ import Link from "@components/Link.astro";
       --lr-margins: 18%;
     }
     padding: 40px var(--lr-margins);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    //centers item inline - wrt row
-    align-items: center;
-    justify-content: space-between;
-    backdrop-filter: saturate(180%) blur(20px);
   }
 
   #footer > * {
@@ -73,7 +79,7 @@ import Link from "@components/Link.astro";
   }
 
   #bye {
-    color: var(--text-primary);
+    color: var(--foreground);
     margin-bottom: 20px;
     font-size: 1.1rem;
   }
@@ -95,7 +101,7 @@ import Link from "@components/Link.astro";
   }
 
   .footnote {
-    color: var(--text-primary);
+    color: var(--foreground);
     text-align: center;
     font-size: 1.1rem;
   }
@@ -142,7 +148,7 @@ import Link from "@components/Link.astro";
       font-size: 14px;
       -webkit-appearance: none;
       outline: none;
-      background-color: var(--background-secondary);
+      background-color: var(--secondary);
       border: 0.1rem solid var(--border-primary);
       border-radius: 2px;
     }
@@ -173,7 +179,7 @@ import Link from "@components/Link.astro";
   .loader {
     width: 25px;
     height: 25px;
-    border: 3px dotted var(--text-primary);
+    border: 3px dotted var(--foreground);
     border-radius: 50%;
     display: inline-block;
     position: relative;

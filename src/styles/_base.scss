@@ -1,4 +1,5 @@
 @use "@styles/include-media" as query;
+@use "@styles/variables" as v;
 
 * {
   box-sizing: border-box;
@@ -33,7 +34,7 @@ main {
 
 body {
   margin: 0;
-  background-color: var(--background-primary);
+  background-color: var(--background);
 }
 
 h1,
@@ -51,7 +52,7 @@ p {
 
 a {
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--foreground);
 }
 
 input,
@@ -88,7 +89,7 @@ textarea {
 }
 
 .icon {
-  fill: var(--text-primary);
+  fill: var(--foreground);
   width: 20px;
   position: relative;
 
@@ -102,17 +103,17 @@ textarea {
 }
 
 .li-icon.mono svg {
-  fill: var(--text-primary);
+  fill: var(--foreground);
 }
 
 .accent-button {
   height: 100%;
-  background-color: var(--cyan-10);
-  border: 1px solid var(--cyan-20);
+  background-color: light-dark(v.$cyan-500, v.$cyan-800);
+  border: 1px solid light-dark(v.$cyan-300, v.$cyan-700);
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px 0;
   box-sizing: border-box;
-  color: var(--text-primary);
+  color: var(--foreground);
   cursor: pointer;
   font-family: var(--font-sans-serif);
   font-size: 1rem;
@@ -127,15 +128,16 @@ textarea {
 
   text-align: center;
   transform: translateY(0);
-  transition: transform 150ms,
-  box-shadow 150ms;
+  transition:
+    transform 150ms,
+    box-shadow 150ms;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
 }
 
 .accent-button:hover:not(:disabled) {
-  background-color: var(--cyan-20);
+  background-color: light-dark(v.$cyan-300, v.$cyan-600);
   box-shadow: rgba(0, 0, 0, 0.15) 0 3px 9px 0;
   transform: translateY(-2px);
 }
@@ -144,29 +146,29 @@ textarea {
   outline: 3px solid #4369a8;
 }
 
-.accent-button.green {
-  background-color: var(--green-10);
-  border: 1px solid var(--green-20);
-}
+// .accent-button.green {
+//   background-color: var(--green-10);
+//   border: 1px solid var(--green-20);
+// }
 
-.accent-button.green:hover {
-  background-color: var(--green-30);
-}
+// .accent-button.green:hover {
+//   background-color: var(--green-30);
+// }
 
-.accent-button.pink {
-  background-color: var(--pink-10);
-  border: 1px solid var(--pink-20);
-}
+// .accent-button.pink {
+//   background-color: var(--pink-10);
+//   border: 1px solid var(--pink-20);
+// }
 
-.accent-button.pink:hover {
-  background-color: var(--pink-20);
-}
+// .accent-button.pink:hover {
+//   background-color: var(--pink-20);
+// }
 
-.accent-button.yellow {
-  background-color: var(--yellow-10);
-  border: 1px solid var(--yellow-20);
-}
+// .accent-button.yellow {
+//   background-color: var(--yellow-10);
+//   border: 1px solid var(--yellow-20);
+// }
 
-.accent-button.yellow:hover {
-  background-color: var(--yellow-20);
-}
+// .accent-button.yellow:hover {
+//   background-color: var(--yellow-20);
+// }

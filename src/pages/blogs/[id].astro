@@ -3,7 +3,6 @@ import { getCollection, render } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import { h1, h2, h3, h4, h5, h6 } from "@components/heading";
 
-// 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
   const posts = await getCollection("blogs");
   return posts.map((post) => ({
@@ -39,25 +38,30 @@ const components = {
   </article>
 </Layout>
 
-<style is:global>
+<style lang="scss" is:global>
+  @use "@styles/include-media" as query;
+
   .content {
     margin: 6% 12%;
-  }
-</style>
 
-<style>
+    @include query.media("<tablet") {
+      margin: 6% 8%;
+    }
+    @include query.media(">=1440px") {
+      margin: 6% 18%;
+    }
+  }
+  
   article {
     code {
-      /*background-color: #474454;*/
-      background-color: light-dark(#edeef0, #474454);
+      background-color: var(--code-bg);
       padding: 0.125em 0.25em;
       border-radius: 0.25rem;
       font-size: calc(1em - 10%);
     }
 
     a:not([href^="#"]) {
-      color: var(--blue-10);
-      color: #24c5e7;
+      color: var(--link);
       text-decoration: none;
       transition: all 0.2s ease-in-out;
     }

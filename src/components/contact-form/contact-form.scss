@@ -1,3 +1,5 @@
+@use "@styles/variables" as v;
+
 .contact {
     width: 100%;
     flex-grow: 1;
@@ -39,14 +41,14 @@
     input {
         font-size: 14px;
         outline: none;
-        background-color: var(--background-secondary);
-        border: 0.1rem solid var(--border-primary);
+        background-color: var(--secondary);
+        border: 0.1rem solid var(--border-mono);
         border-radius: 2px;
     }
 
     >textarea:focus-visible,
     input:focus-visible {
-        outline: 0.15rem solid var(--cyan-10);
+        outline: 0.15rem solid light-dark(v.$cyan-200, v.$cyan-800);
     }
 
     >textarea {
@@ -73,7 +75,7 @@
 .loader {
     width: 18px;
     height: 18px;
-    border: 2px dotted var(--text-primary);
+    border: 2px dotted var(--foreground);
     border-radius: 50%;
     display: inline-block;
     position: relative;

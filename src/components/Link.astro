@@ -1,15 +1,15 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import classnames from "classnames";
-import { Icon, type IconProps } from "./Icon.tsx";
-import type { Name as IconName } from "@icons/types";
+// import { Icon, type IconProps } from "./Icon.tsx";
+import { Icon } from "astro-icon/components";
 import type { Accent } from "src/types";
 
 interface Props extends HTMLAttributes<"a"> {
   type?: "primary" | "secondary" | "icon";
   accent?: Accent;
-  icon?: IconName;
-  iconProps?: Partial<IconProps>;
+  icon?: Parameters<typeof Icon>[0]["name"];
+  iconProps?: Omit<Parameters<typeof Icon>[0], "name">;
 }
 
 const {
@@ -32,9 +32,7 @@ const className = classnames("link", classProp, {
 ---
 
 <a href={href ?? ""} class={className} {...rest}>
-  <!-- TODO solve type issue -->
-  <!-- @ts-ignore -->
-  {icon ? <Icon name={icon} {...(iconProps ? iconProps : {})} /> : null}
+  {icon ? <Icon name={icon} size={18} {...(iconProps ? iconProps : {})} /> : null}
   {
     type !== "icon" ? (
       <span class="link__title">
@@ -45,16 +43,18 @@ const className = classnames("link", classProp, {
 </a>
 
 <style lang="scss">
+  @use "@styles/variables" as v;
+
   .link {
-    border-radius: 4px;
-    color: var(--text-primary);
+    border-radius: 0.25rem;
+    color: var(--foreground);
     cursor: pointer;
     font-size: 1rem;
     font-weight: 400;
     height: 100%;
     max-width: fit-content;
     outline: none;
-    padding: 10px 25px;
+    padding: 0.625rem 1.5625rem;
     text-align: center;
     touch-action: manipulation;
     transform: translateY(0);
@@ -66,60 +66,66 @@ const className = classnames("link", classProp, {
     align-items: center;
     flex-direction: row;
     column-gap: 0.55rem;
+    border: 1px solid transparent;
 
     &--primary {
-      background-color: var(--cyan-10);
-      border: 1px solid var(--cyan-20);
+      background-color: light-dark(v.$cyan-450, v.$cyan-800);
+      border-color: light-dark(v.$cyan-300, v.$cyan-700);
 
       &:hover {
-        background-color: var(--cyan-20);
+        background-color: light-dark(v.$cyan-500, v.$cyan-700);
       }
 
       &:hover:not(:disabled) {
-        box-shadow: rgba(0, 0, 0, 0.15) 0 3px 9px 0;
+        box-shadow:
+          color-mix(in oklch, v.$neutral-900 12%, transparent) 0 3px 9px 0;
         transform: translateY(-2px);
       }
     }
 
     &--green {
-      background-color: var(--green-10);
-      border: 1px solid var(--green-20);
+      background-color: light-dark(v.$emerald-200, v.$emerald-800);
+      border-color: light-dark(v.$emerald-300, v.$emerald-700);
 
       &:hover {
-        background-color: var(--green-30);
+        background-color: light-dark(v.$emerald-300, v.$emerald-700);
       }
     }
 
     &--pink {
-      background-color: var(--pink-10);
-      border: 1px solid var(--pink-20);
+      background-color: light-dark(v.$pink-200, v.$pink-800);
+      border-color: light-dark(v.$pink-300, v.$pink-700);
 
       &:hover {
-        background-color: var(--pink-20);
+        background-color: light-dark(v.$pink-300, v.$pink-700);
       }
     }
 
     &--yellow {
-      background-color: var(--yellow-10);
-      border: 1px solid var(--yellow-20);
+      background-color: light-dark(v.$yellow-200, v.$yellow-800);
+      border-color: light-dark(v.$yellow-350, v.$yellow-700);
 
       &:hover {
-        background-color: var(--yellow-20);
+        background-color: light-dark(v.$yellow-350, v.$yellow-700);
       }
     }
 
     &:focus {
-      outline: 3px solid #4369a8;
+      outline: 3px solid light-dark(v.$blue-500, v.$blue-400);
     }
 
     &--icon {
       padding: 0;
+      border: none;
+
+      // &:hover {
+      //   background-color: var(--icon-button-hover);
+      // }
     }
 
     &--secondary {
       padding: 0;
       border-radius: 0;
-      // display: inline-block;
       text-decoration: none;
       color: inherit;
       line-height: 1;
@@ -127,11 +133,13 @@ const className = classnames("link", classProp, {
       &.contact-link {
         display: flex;
       }
-    }
 
-    &--secondary {
       .link__title {
-        background: linear-gradient(0deg, var(--cyan-20), var(--cyan-20))
+        background: linear-gradient(
+            0deg,
+            light-dark(v.$cyan-400, v.$cyan-600),
+            light-dark(v.$cyan-400, v.$cyan-600)
+          )
           no-repeat right bottom / 0 var(--bg-h);
         transition: background-size 350ms;
         padding-bottom: 2px;

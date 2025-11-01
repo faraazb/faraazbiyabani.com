@@ -1,5 +1,5 @@
 import { z, type SchemaContext } from "astro:content";
-import { ZodAccents, ZodIcons } from "src/types";
+import { ZodAccents } from "src/types";
 
 export const project = ({ image }: SchemaContext) =>
   z.object({
@@ -13,7 +13,7 @@ export const project = ({ image }: SchemaContext) =>
     links: z
       .object({
         title: z.string(),
-        icon: ZodIcons,
+        icon: z.string(),
         url: z.string(),
       })
       .array(),

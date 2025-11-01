@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import { DateRange } from "@icons/index";
 import Link from "@components/Link.astro";
 import type { Experience } from "./experience.schema";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   data: Experience;
@@ -37,7 +37,7 @@ const { heading, experiences } = data;
             <div class="experience__information description">
               <Link
                 type="secondary"
-                icon="building"
+                icon="ph:building-office"
                 href={company.url}
                 target="_blank"
                 rel="noreferrer"
@@ -49,7 +49,7 @@ const { heading, experiences } = data;
                   <li class="role">
                     <div class="role__title">{title}</div>
                     <div class="role__duration">
-                      <DateRange class="icon-h" />
+                      <Icon name="ph:calendar-dots" />
                       <span>{duration}</span>
                     </div>
                   </li>
@@ -67,7 +67,7 @@ const { heading, experiences } = data;
   .roles {
     margin: 0;
     padding: 0.4rem;
-    color: var(--text-secondary);
+    color: var(--secondary-foreground);
     display: flex;
     flex-direction: column;
     row-gap: 0.8rem;
@@ -93,7 +93,7 @@ const { heading, experiences } = data;
 
   .icon-h {
     height: 16px;
-    fill: var(--text-secondary);
+    fill: var(--secondary-foreground);
   }
 
   .role__duration > .icon-h {

@@ -7,11 +7,11 @@ import { Icon } from "astro-icon/components";
 
 <section>
 ## Some context...
-I bought a new phone a year ago and since then my old phone has just been lying around. This old phone is a Redmi Note 8 and it is rooted. Having root access on a device unlocks various possibilites.
+I bought a new [phone](https://www.mi.com/global/redmi-note-8) a year ago and since then my old phone has just been lying around. This old phone is a Redmi Note 8 and it is rooted. Having root access on a device unlocks various possibilites.
 
 LinuxDeploy is an app which makes it possible to run a Linux distro in a chroot environment. It also provides both SSH and GUI access to the Linux distro. Inside this Linux distro, it is possible to install a number of self-hostable software. One of them being a DNS sinkhole.
 
-A DNS sinkhole is a software that helps you block a list of domains, typically the ones that serve ads or perform analytics. It does so by acting as the DNS server for our devices, blocking requests to domains on the block list and, resolving and caching the IP address resolutions for other domains by querying an upstream DNS server of our choice such as 1.1.1.1 (Cloudflare) or [another example].
+A DNS sinkhole is a software that helps you block a list of domains, typically the ones that serve ads or perform analytics. It does so by acting as the DNS server for our devices, blocking requests to domains on the block list and, resolving and caching the IP address resolutions for other domains by querying an upstream DNS server of our choice such as 1.1.1.1 (Cloudflare) or .
 
 It is then possible to configure a Wifi router or individual devices to use this DNS server; if the router is configured then devices connecting through DHCP will accept the DNS service offered by the router. It is also common for such software to provide options to customize behaviour per client, display query statistics (top blocked domains, percentage of queries blocked), etc. through an admin web interface.
 
