@@ -1,0 +1,50 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const blogEntries = await getCollection("blog");
+const blogPostLinks = blogEntries.map((entry) => ({
+  title: entry.data.title,
+  slug: entry.id,
+}));
+---
+
+<Layout title={"Blogs - Faraaz Biyabani"}>
+  <div>
+    <h1>Blogs</h1>
+    <ul>
+      {
+        blogPostLinks.map((post) => (
+          <li>
+            <a href={`/blog/${post.slug}`}>{post.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>
+
+<style lang="scss" is:global>
+  @use "@styles/include-media" as query;
+
+  .content {
+    margin: 6% 18%;
+
+    @include query.media("<tablet") {
+      margin: 6% 8%;
+    }
+    @include query.media(">=1440px") {
+      margin: 6% 24%;
+    }
+
+    a:not([href^="#"]) {
+      color: var(--link);
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+    }
+
+    a:not([href^="#"]):hover {
+      text-decoration: underline;
+    }
+  }
+</style>

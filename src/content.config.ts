@@ -5,7 +5,7 @@ import { project } from "@sections/projects/project.schema";
 import { skills } from "@sections/skills/skills.schema";
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
-import { blogPost } from "./pages/blogs/blog-post.schema";
+import { blogPost } from "./pages/blog/blog-post.schema";
 
 const pages = defineCollection({
   loader: glob({ pattern: "*.json", base: "./src/content/pages" }),
@@ -27,13 +27,13 @@ const projects = defineCollection({
   schema: ({ image }) => project({ image }),
 });
 
-const blogs = defineCollection({
-  loader: glob({ pattern: "*.mdx", base: "./src/content/blogs" }),
+const blog = defineCollection({
+  loader: glob({ pattern: "*.mdx", base: "./src/content/blog" }),
   schema: blogPost,
 });
 
 export const collections = {
   pages,
   projects,
-  blogs,
+  blog,
 };

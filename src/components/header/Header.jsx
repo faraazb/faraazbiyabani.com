@@ -99,6 +99,9 @@ export const Header = () => {
         <a href="/#projects" className="nav-link">
           Projects
         </a>
+        {/* <a href="/blog" className="nav-link">
+          Blog
+        </a>*/}
         <a href="/resume" className="nav-link">
           Resume
         </a>
@@ -155,6 +158,18 @@ export const Header = () => {
                       </a>
                     )}
                   </Menu.Item>
+                  {/* <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        className={`${
+                          active ? "item-active" : ""
+                        } nav-menu-item`}
+                        href={"/blog"}
+                      >
+                        Blog
+                      </a>
+                    )}
+                  </Menu.Item>*/}
                   <Menu.Item>
                     {({ active }) => (
                       <a

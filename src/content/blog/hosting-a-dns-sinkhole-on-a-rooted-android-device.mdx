@@ -1,0 +1,161 @@
+---
+title: "Hosting a DNS sinkhole on a rooted Android device"
+---
+import { Callout } from "@components/callout";
+import { Icon } from "astro-icon/components";
+import { Image, Picture } from "astro:assets";
+import linuxDeployAlpineConfig from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/linux_deploy_alpine_config.png"
+import linuxDeployAlpineStartup from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/linux_deploy_alpine_startup.png"
+import piholeDashboard from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihole_dashboard.png"
+import adguardQueryLog from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/adguard_domain_details.png"
+
+
+<section>
+## Some context...
+
+I switched to a new phone a year ago and since then my old phone had just been lying around. Since it is a rooted Android device with 6 GBs of RAM and a decent CPU, I always thought of using it for self-hosting. 
+
+On several ocassions I had come across apps such as [LinuxDeploy](https://github.com/meefik/linuxdeploy) which make it possible to run a Linux distribution in a chroot environment. LinuxDeploy can also auto-configure SSH and GUI access to the chroot jailed Linux distro. With a Linux distro, we can self-host a lot of different software such as media centers, password managers, and... DNS sinkholes.
+
+## DNS Sinkholes
+
+A DNS sinkhole is a software that helps block a list of domains, typically the ones that serve ads or are used for analytics. It does so by acting as the DNS server for our devices, blocking requests to domains on the block list and, resolving and caching the IP address resolutions for other domains by querying an upstream DNS server of our choice such as 1.1.1.1 (Cloudflare) or 8.8.8.8 (Google). If a WiFi router is configured to use this DNS server then devices connecting through DHCP will accept the DNS service offered by the router.
+
+It is also common for such software to provide options to customize behaviour per client, display DNS query statistics (top blocked domains, percentage of queries blocked, per-client statistics), etc. through a web-based admin interface.
+
+Note that a DNS sinkhole is quite limited in what it can do compared to a content filtering software which can manipulate webpage content through rules. Ads served through the same domain (or different routes) as the actual content cannot be blocked since DNS works with FQDNs (fully qualified domain names). While server-oriented solutions which use an MITM proxy exist (see Privoxy and Privaxy), I think client side browser extensions are simpler and practical.
+
+Some popular DNS sinkholes are Pihole, AdGuard Home and Blocky, with Pihole being the most common one. So, it's the first one I decided to setup.
+</section>
+
+<section>
+## Alpine in chroot
+
+The first step was to obtain a Linux environment. I installed LinuxDeploy app and while it doesn't state [BusyBox](Bhttps://xdaforums.com/t/tools-zips-scripts-osm0sis-odds-and-ends-multiple-devices-platforms.2239421/) as a requirement, I installed that as well after failing to get SSH working on Debian thinking that not having BusyBox is the problem. After some troubleshooting, I gave up and decided to use Alpine.
+These are the changed configuration values for the LinuxDeploy profile.
+
+<p>
+<table>
+   	<tbody>
+  		<tr>
+ 			<th rowspan="2">Bootstrap</th>
+ 			<th>Distribution</th>
+ 			<td>Alpine</td>
+  		</tr>
+  		<tr>
+ 			<th>Architecture</th>
+ 			<td>aarch64</td>
+  		</tr>
+  		<tr>
+ 			<th>Init</th>
+ 			<th>Init system</th>
+ 			<td>sysv</td>
+  		</tr>
+  		<tr>
+ 			<th>SSH</th>
+ 			<th>Enable</th>
+ 			<td>Checked</td>
+  		</tr>
+   	</tbody>
+</table>
+</p>
+
+<div style={{display: "flex", gap: '1.5rem'}}>
+    <figure style="display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0">
+        <Picture src={linuxDeployAlpineConfig} layout="constrained" style="max-width: 100%; width: auto; height: auto; max-height: 550px;" alt="Image"/>
+        <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>LinuxDeploy profile configuration</figcaption>
+    </figure>
+    <figure style="display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0">
+        <Picture src={linuxDeployAlpineStartup} layout="constrained" style="max-width: 100%; width: auto; height: auto; max-height: 550px;" alt="Image"/>
+        <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>Startup</figcaption>
+    </figure>
+</div>
+
+Also, a static IP for the device is important as consuming devices will be configured to point at this static IP. This can be done through the router settings (look for terms - DHCP, static IP, address reservation) or even on the device itself by configuring a static IP instead of using DHCP under WiFi/Network settings.
+
+Then I SSHed into the Alpine instance from my computer.
+```shell output={2-4}
+ssh android@192.168.0.126
+android@192.168.0.126's password:
+Alpine Linux v3.22 [running via Linux Deploy]
+localhost:~$ {cursor}
+```
+
+We are running Alpine!
+</section>
+
+<section>
+## Installing Pi-hole
+
+Pihole is not oficially supported on Alpine!
+
+But, the community has already made [scripts](https://gitlab.com/yvelon/pi-hole), guides and raised [discussions](https://discourse.pi-hole.net/t/pihole-v6-beta-baremetal-on-alpine/65609/10) regarding installing pihole on baremetal Alpine. A [package](https://pkgs.alpinelinux.org/package/edge/testing/aarch64/pihole) also exists in the Edge repository which makes the installation quite easy.
+
+```shell
+sudo apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing pihole
+```
+
+The package install creates a user "pihole", sets up the required directories and files with necessary permissions, sets up logrotate and a cron job to update the pihole domain blocklist database (aka "gravity").
+It also creates an init script at `/etc/init.d/pihole` which starts the pihole service after booting.
+
+We can start the pihole service with
+```shell
+sudo service pihole start
+```
+
+The package install still differs from the conventional [`basic-install.sh`](https://github.com/pi-hole/pi-hole/blob/master/automated%20install/basic-install.sh) script which also performs initial configuration such as the network interface, admin interface password, block lists, logging level, etc. So I configured some of these by editing `/etc/pihole/pihole.toml`, set the password by running `sudo pihole setpassword` and restarted the pihole service.
+
+Here's the updated configuration:
+```diff lang="toml" title="pihole.toml"
+[dns]
+- upstreams = []
++ upstreams = [
++   "1.1.1.1",
++   "1.0.0.1",
++ ]
+
+[webserver.api]
+- pwhash = ""
++ pwhash = "updated-password-hash"
+```
+
+I visited `http://192.168.0.126/admin` and logged into the Pihole admin interface. There I added StevenBlack's host lists as the first list and updated the Gravity database. Then I configured my phone to point to the Android device's static IP and opened a few apps and websites.
+
+<figure style="margin: 1.2rem 0">
+    <Picture src={piholeDashboard} layout="constrained" style="max-width: 100%; height: auto;" alt="Image"/>
+    <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>Pi-hole dashboard</figcaption>
+</figure>
+
+On the dashboard, I could see that some domains were being blocked. I could see the same thing by tailing the logs.
+
+```shell
+tail -f /var/log/pihole/pihole.log
+```
+
+Inside `/var/log/pihole`, there's also `FTL.log` and `webserver.log` which can be useful for troubleshooting if something is not working.
+</section>
+
+<section>
+## Installing AdGuard Home
+
+When I realized that Pihole is not the only option, I had to try at least one other option and I chose AdGuard Home as the installation seemed easy, and it was.
+
+Before I began, I stopped the pihole service to avoid any potential issues. I obtained a binary for my architecture (aarch64) from the GitHub releases, unpacked the tar, enabled execution for the AdGuardHome binary (`chmod +x AdGuardHome`), executed it and it was running. It identified the first run and then displayed some onboarding configuration through the web UI.
+
+To run it as a service, I created an init file at `/etc/init.d/AdGuardHome` to start the service at startup as described [here](https://vladislav.xyz/posts/adguard-on-alpine-linux/). The installation was complete. Since it comes with a default upstream DNS server, and a default block list configured, it starts working out of the box.
+
+<figure style="margin: 1.2rem 0">
+    <Picture src={adguardQueryLog} layout="constrained" style="max-width: 100%; height: auto;" alt="Image"/>
+    <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>AdGuard Home query log</figcaption>
+</figure>
+
+I configured a password for the admin interface (during onboarding configuration), changed the upstream DNS to Cloudflare, added StevenBlack's list in addition to the default list. The admin interface also has the ability to identify domains by name and categorize them which is a nice to have.
+</section>
+
+<section>
+
+## Which one to keep?
+
+In my opinion, the AdGuard Home UI is more polished, but I will be sticking to Pi-hole for a while to explore it a bit more. This was also an experiment to evaluate how complex self-hosting on a rooted Android device is. Given the effort and the low resource consumption on the device, I am now eager to try and self-host more services on it, and Vaultwarden looks like a good candidate!
+
+</section>
