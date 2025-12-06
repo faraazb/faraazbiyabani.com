@@ -1,4 +1,4 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import preact from "@astrojs/preact";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
@@ -9,6 +9,21 @@ import { expressiveCodeCursor, expressiveCodeTerminal } from "./src/utils";
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    fonts: [
+      {
+        name: "Inter",
+        cssVariable: "--font-inter",
+        provider: fontProviders.fontsource(),
+        // Specify weights that are actually used
+        // weights: [400, 500, 600, 700],
+        // Specify styles that are actually used
+        // styles: ["normal"],
+        // Download only font files for characters used on the page
+        // subsets: ["latin", "cyrillic"],
+      },
+    ],
+  },
   integrations: [
     preact({
       compat: true,
@@ -17,7 +32,7 @@ export default defineConfig({
     icon(),
     expressiveCode({
       plugins: [expressiveCodeTerminal(), expressiveCodeCursor()],
-      theme: ["rose-pine-dawn", "poimandres"],
+      themes: ["rose-pine-dawn", "poimandres"],
       themeCssSelector: (theme, { styleVariants }) => {
         return `.${theme.type}`;
       },

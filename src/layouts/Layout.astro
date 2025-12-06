@@ -3,6 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import { Header } from "@components/header";
 import Footer from "@components/Footer.astro";
 import CommonSeo from "@seo/Common.astro";
+import { Font } from "astro:assets";
 
 interface Props {
   title?: string;
@@ -16,7 +17,6 @@ const isProduction = import.meta.env.PROD;
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -24,6 +24,7 @@ const isProduction = import.meta.env.PROD;
     <title>{title}</title>
     <CommonSeo title={title} />
     <ClientRouter />
+    <Font cssVariable="--font-inter" />
   </head>
   <body>
     <div class="root">
@@ -35,17 +36,10 @@ const isProduction = import.meta.env.PROD;
       </div>
       <Footer />
     </div>
-    <!-- <Footer /> -->
     <style lang="scss" is:global>
       @use "@styles/main";
       // @use "@styles/base";
       @use "@styles/include-media" as query;
-
-      html {
-        font-family: system-ui, sans-serif;
-        background: #13151a;
-        background-size: 224px;
-      }
 
       code {
         font-family:

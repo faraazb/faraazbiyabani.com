@@ -1,9 +1,11 @@
-@use "variables" as v;
+@use "../styles/variables" as v;
 
 @mixin theme {
   // Theme variables
-  --background: light-dark(#{v.$neutral-50},
-    color-mix(in oklab, #{v.$neutral-900} 90%, #{v.$violet-950} 10%));
+  --background: light-dark(
+    #{v.$neutral-50},
+    color-mix(in oklab, #{v.$neutral-900} 90%, #{v.$violet-950} 10%)
+  );
   --foreground: light-dark(#{v.$neutral-950}, #{v.$neutral-50});
   --card: light-dark(#{v.$neutral-50}, #{v.$neutral-950});
   --card-foreground: light-dark(#{v.$neutral-950}, #{v.$neutral-50});
@@ -23,12 +25,15 @@
   --ring: light-dark(#{v.$neutral-400}, #{v.$neutral-300});
 
   --button-border: light-dark(#{v.$neutral-300}, #{v.$neutral-700});
-  --header-bg: light-dark(oklch(1 0 0 / 90%),
-      oklch(0.275 0.0185 294.32 / 90%));
-  --icon-button-hover: light-dark(color-mix(in oklab, #{v.$neutral-200} 60%, transparent),
-    color-mix(in oklab, #{v.$neutral-600} 55%, transparent));
-  --icon-container-hover: light-dark(color-mix(in oklab, #{v.$neutral-300} 40%, transparent),
-    color-mix(in oklab, #{v.$neutral-500} 45%, transparent));
+  --header-bg: light-dark(oklch(1 0 0 / 90%), oklch(0.275 0.0185 294.32 / 90%));
+  --icon-button-hover: light-dark(
+    color-mix(in oklab, #{v.$neutral-200} 60%, transparent),
+    color-mix(in oklab, #{v.$neutral-600} 55%, transparent)
+  );
+  --icon-container-hover: light-dark(
+    color-mix(in oklab, #{v.$neutral-300} 40%, transparent),
+    color-mix(in oklab, #{v.$neutral-500} 45%, transparent)
+  );
   --link: light-dark(#{v.$blue-600}, #{v.$cyan-500});
   --code-bg: light-dark(#{v.$slate-200}, #{v.$neutral-925});
 }

@@ -32,7 +32,11 @@ const className = classnames("link", classProp, {
 ---
 
 <a href={href ?? ""} class={className} {...rest}>
-  {icon ? <Icon name={icon} size={18} {...(iconProps ? iconProps : {})} /> : null}
+  {
+    icon ? (
+      <Icon name={icon} size={18} {...(iconProps ? iconProps : {})} />
+    ) : null
+  }
   {
     type !== "icon" ? (
       <span class="link__title">
@@ -77,8 +81,8 @@ const className = classnames("link", classProp, {
       }
 
       &:hover:not(:disabled) {
-        box-shadow:
-          color-mix(in oklch, v.$neutral-900 12%, transparent) 0 3px 9px 0;
+        box-shadow: color-mix(in oklch, v.$neutral-900 12%, transparent) 0 3px
+          9px 0;
         transform: translateY(-2px);
       }
     }
