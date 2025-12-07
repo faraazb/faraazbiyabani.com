@@ -5,21 +5,27 @@ image: "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihol
 updatedAt: 2025-12-07
 publishedAt: 2025-12-07
 ---
+
 import { Callout } from "@components/callout";
 import { Icon } from "astro-icon/components";
 import { Image, Picture } from "astro:assets";
-import linuxDeployAlpineConfig from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/linux_deploy_alpine_config.png"
-import linuxDeployAlpineStartup from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/linux_deploy_alpine_startup.png"
-import piholeDashboard from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihole_dashboard.png"
-import adguardQueryLog from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/adguard_domain_details.png"
-import piholeOnAndroid from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihole_on_android_without_title.png"
+import linuxDeployAlpineConfig from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/linux_deploy_alpine_config.png";
+import linuxDeployAlpineStartup from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/linux_deploy_alpine_startup.png";
+import piholeDashboard from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihole_dashboard.png";
+import adguardQueryLog from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/adguard_domain_details.png";
+import piholeOnAndroid from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihole_on_android_without_title.png";
 
-<Picture src={piholeOnAndroid} layout="constrained" style="max-width: 100%; height: auto;" alt="A robot which represents an Android device filtering DNS requests represented by boxes on a conveyor belt using a scanning device which represents the Pi-hole software"/>
+<Picture
+  src={piholeOnAndroid}
+  layout="constrained"
+  style="max-width: 100%; height: auto;"
+  alt="A robot which represents an Android device filtering DNS requests represented by boxes on a conveyor belt using a scanning device which represents the Pi-hole software"
+/>
 
 <section>
 ## Some background...
 
-I switched to a new phone a year ago and since then my old phone had just been lying around. Since it is a rooted Android device, I always thought of using it for self-hosting. 
+I switched to a new phone a year ago and since then my old phone had just been lying around. Since it is a rooted Android device, I always thought of using it for self-hosting.
 
 On several ocassions I had come across apps such as [LinuxDeploy](https://github.com/meefik/linuxdeploy) which make it possible to run a Linux distribution in a chroot environment. LinuxDeploy can also auto-configure SSH and GUI access to the chroot jailed Linux distro. With a Linux distro, we can self-host a lot of different software such as media centers, password managers, and... DNS sinkholes.
 
@@ -32,54 +38,70 @@ It is also common for such software to provide options to customize behaviour pe
 Note that a DNS sinkhole is quite limited in what it can do compared to a content filtering software which can manipulate webpage content through rules. Ads served through the same domain (e.g. using different routes) as the actual content cannot be blocked since DNS works with FQDNs (fully qualified domain names). While server-oriented solutions which use an MITM proxy exist (see Privoxy and Privaxy), I think client side browser extensions are simpler and practical.
 
 Some popular DNS sinkholes are Pihole, AdGuard Home and Blocky, with Pihole being the most common one. So, it's the first one I decided to setup.
+
 </section>
 
 <section>
 ## Alpine in chroot
 
-The first step was to obtain a Linux environment. I installed LinuxDeploy app and while it doesn't state [BusyBox](Bhttps://xdaforums.com/t/tools-zips-scripts-osm0sis-odds-and-ends-multiple-devices-platforms.2239421/) as a requirement, I installed that as well after failing to get SSH working on Debian thinking that not having BusyBox is the problem. After some troubleshooting, I gave up and decided to use Alpine.
+The first step was to obtain a Linux environment. I installed LinuxDeploy app and while it doesn't state [BusyBox](https://xdaforums.com/t/tools-zips-scripts-osm0sis-odds-and-ends-multiple-devices-platforms.2239421/) as a requirement, I installed that as well after failing to get SSH working on Debian thinking that not having BusyBox is the problem. After some troubleshooting, I gave up and decided to use Alpine.
 These are the changed configuration values for the LinuxDeploy profile.
 
 <p>
-<table>
-   	<tbody>
-  		<tr>
- 			<th rowspan="2">Bootstrap</th>
- 			<th>Distribution</th>
- 			<td>Alpine</td>
-  		</tr>
-  		<tr>
- 			<th>Architecture</th>
- 			<td>aarch64</td>
-  		</tr>
-  		<tr>
- 			<th>Init</th>
- 			<th>Init system</th>
- 			<td>sysv</td>
-  		</tr>
-  		<tr>
- 			<th>SSH</th>
- 			<th>Enable</th>
- 			<td>Checked</td>
-  		</tr>
-   	</tbody>
-</table>
+  <table>
+    <tbody>
+      <tr>
+        <th rowspan="2">Bootstrap</th>
+        <th>Distribution</th>
+        <td>Alpine</td>
+      </tr>
+      <tr>
+        <th>Architecture</th>
+        <td>aarch64</td>
+      </tr>
+      <tr>
+        <th>Init</th>
+        <th>Init system</th>
+        <td>sysv</td>
+      </tr>
+      <tr>
+        <th>SSH</th>
+        <th>Enable</th>
+        <td>Checked</td>
+      </tr>
+    </tbody>
+  </table>
 </p>
 
-<div style={{display: "flex", gap: '1.5rem'}}>
-    <figure style="display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0">
-        <Picture src={linuxDeployAlpineConfig} layout="constrained" style="max-width: 100%; width: auto; height: auto; max-height: 550px;" alt="Screenshot from Android device showing the profile configuration screen in LinuxDeploy app"/>
-        <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>LinuxDeploy profile configuration</figcaption>
-    </figure>
-    <figure style="display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0">
-        <Picture src={linuxDeployAlpineStartup} layout="constrained" style="max-width: 100%; width: auto; height: auto; max-height: 550px;" alt="Another screenshot showing the Linux distro startup logs"/>
-        <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>Startup</figcaption>
-    </figure>
+<div style={{ display: "flex", gap: "1.5rem" }}>
+  <figure style="display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0">
+    <Picture
+      src={linuxDeployAlpineConfig}
+      layout="constrained"
+      style="max-width: 100%; width: auto; height: auto; max-height: 550px;"
+      alt="Screenshot from Android device showing the profile configuration screen in LinuxDeploy app"
+    />
+    <figcaption style={{ fontStyle: "italic", textAlign: "center" }}>
+      LinuxDeploy profile configuration
+    </figcaption>
+  </figure>
+  <figure style="display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0">
+    <Picture
+      src={linuxDeployAlpineStartup}
+      layout="constrained"
+      style="max-width: 100%; width: auto; height: auto; max-height: 550px;"
+      alt="Another screenshot showing the Linux distro startup logs"
+    />
+    <figcaption style={{ fontStyle: "italic", textAlign: "center" }}>
+      Startup
+    </figcaption>
+  </figure>
 </div>
 
 Also, a static IP for the device is important as consuming devices will be configured to point at this static IP. This can be done through the router settings (look for terms - DHCP, static IP, address reservation) or even on the device itself by configuring a static IP instead of using DHCP under WiFi/Network settings.
 
 Then I SSHed into the Alpine instance from my computer.
+
 ```shell output={2-4}
 ssh android@192.168.0.126
 android@192.168.0.126's password:
@@ -88,6 +110,7 @@ localhost:~$ {cursor}
 ```
 
 We are running Alpine!
+
 </section>
 
 <section>
@@ -105,6 +128,7 @@ The package install creates a user "pihole", sets up the required directories an
 It also creates an init script at `/etc/init.d/pihole` which starts the pihole service after booting.
 
 We can start the pihole service with
+
 ```shell
 sudo service pihole start
 ```
@@ -112,6 +136,7 @@ sudo service pihole start
 The package install still differs from the conventional [`basic-install.sh`](https://github.com/pi-hole/pi-hole/blob/master/automated%20install/basic-install.sh) script which also performs initial configuration such as the network interface, admin interface password, block lists, logging level, etc. So I configured some of these by editing `/etc/pihole/pihole.toml`, set the password by running `sudo pihole setpassword` and restarted the pihole service.
 
 Here's the updated configuration:
+
 ```diff lang="toml" title="pihole.toml"
 [dns]
 - upstreams = []
@@ -128,8 +153,15 @@ Here's the updated configuration:
 I visited `http://192.168.0.126/admin` and logged into the Pihole admin interface. There I added StevenBlack's host lists as the first list and updated the Gravity database. Then I configured my phone to point to the Android device's static IP and opened a few apps and websites.
 
 <figure style="margin: 1.2rem 0">
-    <Picture src={piholeDashboard} layout="constrained" style="max-width: 100%; height: auto;" alt="Screenshot from a browser on a computer showing the Pi-hole dashboard"/>
-    <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>Pi-hole dashboard</figcaption>
+  <Picture
+    src={piholeDashboard}
+    layout="constrained"
+    style="max-width: 100%; height: auto;"
+    alt="Screenshot from a browser on a computer showing the Pi-hole dashboard"
+  />
+  <figcaption style={{ fontStyle: "italic", textAlign: "center" }}>
+    Pi-hole dashboard
+  </figcaption>
 </figure>
 
 On the dashboard, I could see that some domains were being blocked. I could see the same thing by tailing the logs.
@@ -139,6 +171,7 @@ tail -f /var/log/pihole/pihole.log
 ```
 
 Inside `/var/log/pihole`, there's also `FTL.log` and `webserver.log` which can be useful for troubleshooting if something is not working.
+
 </section>
 
 <section>
@@ -151,11 +184,19 @@ Before I began, I stopped the pihole service to avoid any potential issues. I ob
 To run it as a service, I created an init file at `/etc/init.d/AdGuardHome` to start the service at startup as described [here](https://vladislav.xyz/posts/adguard-on-alpine-linux/). The installation was complete. Since it comes with a default upstream DNS server, and a default block list configured, it starts working out of the box.
 
 <figure style="margin: 1.2rem 0">
-    <Picture src={adguardQueryLog} layout="constrained" style="max-width: 100%; height: auto;" alt="Screenshot from a browser on a computer showing the AdGuard Home query log"/>
-    <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>AdGuard Home query log</figcaption>
+  <Picture
+    src={adguardQueryLog}
+    layout="constrained"
+    style="max-width: 100%; height: auto;"
+    alt="Screenshot from a browser on a computer showing the AdGuard Home query log"
+  />
+  <figcaption style={{ fontStyle: "italic", textAlign: "center" }}>
+    AdGuard Home query log
+  </figcaption>
 </figure>
 
 I configured a password for the admin interface (during onboarding configuration), changed the upstream DNS to Cloudflare, added StevenBlack's list in addition to the default list. The admin interface also has the ability to identify domains by name and categorize them which is a nice to have.
+
 </section>
 
 <section>

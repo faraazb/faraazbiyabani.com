@@ -2,44 +2,44 @@
 import { Icon } from "astro-icon/components";
 
 interface Props {
-    title: string;
-    icon?: string;
+  title: string;
+  icon?: string;
 }
 
 const { icon, title } = Astro.props;
 ---
 
 <aside class="callout">
-    <p class="callout__title">
-        {
-            icon ? (
-                <span class="callout__icon">
-                    <Icon size={24} name={icon} />
-                </span>
-            ) : null
-        }
-        <span class="callout__title-text">{title}</span>
-    </p>
-    <slot />
+  <p class="callout__title">
+    {
+      icon ? (
+        <span class="callout__icon">
+          <Icon size={24} name={icon} />
+        </span>
+      ) : null
+    }
+    <span class="callout__title-text">{title}</span>
+  </p>
+  <slot />
 </aside>
 
 <style lang="scss">
-    .callout {
-        background-color: var(--secondary);
-        border-radius: 0.65rem;
-        padding: 1.5rem;
-        // display: flex;
-        // align-items: flex-start;
-        // column-gap: 0.65rem;
+  .callout {
+    background-color: var(--secondary);
+    border-radius: 0.65rem;
+    padding: 1.5rem;
+    // display: flex;
+    // align-items: flex-start;
+    // column-gap: 0.65rem;
 
-        svg {
-            flex-shrink: 0;
-        }
+    svg {
+      flex-shrink: 0;
     }
+  }
 </style>
 
 <style lang="scss" is:global>
-    .callout > p {
-        margin: 0;
-    }
+  .callout > p {
+    margin: 0;
+  }
 </style>

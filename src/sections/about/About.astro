@@ -17,7 +17,9 @@ const { title, bio, links, picture } = data;
       <h1 class="header-1">{title}</h1>
       <p class="subtitle-1">{bio}</p>
       <div class="links">
-        <Link icon={"ph:envelope"} href={"/contact"} iconProps={{ size: 20 }}>Get in touch</Link>
+        <Link icon={"ph:envelope"} href={"/contact"} iconProps={{ size: 20 }}
+          >Get in touch</Link
+        >
         {
           links.map(({ title, url, icon }) => (
             <Link
