@@ -6,9 +6,8 @@
 }
 
 html {
-  height: -moz-available;
-  height: -webkit-fill-available;
-  height: fill-available;
+  /* height: -moz-available;
+  height: -webkit-fill-available; */
   --section-margin-top: 150px;
 
   @include query.media("<=tablet") {
@@ -22,9 +21,9 @@ html {
 
 body {
   min-height: 100vh;
-  height: -moz-available;
+  /* height: -moz-available;
   min-height: -webkit-fill-available;
-  min-height: fill-available;
+  min-height: fill-available; */
   font-family: var(--font-sans-serif);
 }
 
@@ -35,6 +34,11 @@ main {
 body {
   margin: 0;
   background-color: var(--background);
+}
+
+dt,
+dd {
+  margin: 0;
 }
 
 h1,

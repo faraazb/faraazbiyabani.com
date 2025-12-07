@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
-import Layout from "@layouts/Layout.astro";
 import { h1, h2, h3, h4, h5, h6 } from "@components/heading";
+import Layout from "@layouts/Layout.astro";
+import { getImage } from "astro:assets";
+import BlogSeo from "@seo/Blog.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -17,11 +19,6 @@ const { Content } = await render(post);
 const components = {
   // this does not work for some reason
   // h1: (props: HTMLAttributes<"h1">) => <Heading level={1} {...props} />,
-  // h2: (props: HTMLAttributes<"h2">) => <Heading level={2} {...props} />,
-  // h3: (props: HTMLAttributes<"h3">) => <Heading level={3} {...props} />,
-  // h4: (props: HTMLAttributes<"h4">) => <Heading level={4} {...props} />,
-  // h5: (props: HTMLAttributes<"h5">) => <Heading level={5} {...props} />,
-  // h6: (props: HTMLAttributes<"h6">) => <Heading level={6} {...props} />,
   h1,
   h2,
   h3,
@@ -29,27 +26,60 @@ const components = {
   h5,
   h6,
 };
+
+const author = "Faraaz Biyabani";
+const title = `${post.data.title} • ${author}`;
+const description = post.data.description;
+// const updatedAt = post.data.updatedAt;
+// const publishedAt = post.data.publishedAt;
+// // TODO
+// 2. sitemap
+const image = await getImage({
+  src: post.data.image,
+  width: 1200,
+  height: 630,
+});
+const imageSrc = new URL(image.src, Astro.url).toString();
+const imageHeight = image.options.height?.toString();
+const imageWidth = image.options.width?.toString();
+
+const publishedOnDate = post.data.publishedAt.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
 ---
 
-<Layout title={post.data.title}>
+<Layout>
+  <Fragment slot="head">
+    <title>{title}</title>
+    <BlogSeo
+      title={title}
+      description={description}
+      image={{ src: imageSrc, height: imageHeight, width: imageWidth }}
+      author={author}
+    />
+  </Fragment>
   <article>
     <h1>{post.data.title}</h1>
+    <dl>
+      <dt><i>Published on</i></dt>
+      <dd>
+        <time datetime={post.data.publishedAt.toISOString()}>
+          <b>
+            {publishedOnDate}
+          </b>
+        </time>
+      </dd>
+    </dl>
     <Content components={components} />
   </article>
 </Layout>
 
 <style lang="scss" is:global>
-  @use "@styles/include-media" as query;
-
-  .content {
-    margin: 6% 18%;
-
-    @include query.media("<tablet") {
-      margin: 6% 8%;
-    }
-    @include query.media(">=1440px") {
-      margin: 6% 24%;
-    }
+  dl {
+    display: flex;
+    gap: 0.3rem;
   }
 
   article {

@@ -4,18 +4,17 @@ import faraaz from "../assets/images/faraaz.png";
 
 interface Props {
   title?: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
 
 const defaultTitle = title ?? "Faraaz Biyabani";
-const descripttion =
-  "Software Engineer at Contentstack";
+const defaultDescription = description ?? "Software Engineer at Contentstack";
 
-const baseUrl = Astro.site ?? "https://faraazbiyabani.me";
-const url = new URL(Astro.url.pathname ?? "", baseUrl);
+const url = Astro.url;
 
-const imageUrl = new URL(faraaz.src, baseUrl).toString();
+const imageUrl = new URL(faraaz.src, url).toString();
 
 const meta: HTMLAttributes<"meta">[] = [
   {
@@ -24,7 +23,11 @@ const meta: HTMLAttributes<"meta">[] = [
   },
   {
     property: "og:description",
-    content: descripttion,
+    content: defaultDescription,
+  },
+  {
+    name: "description",
+    content: defaultDescription,
   },
   {
     property: "og:image",
@@ -52,7 +55,7 @@ const meta: HTMLAttributes<"meta">[] = [
   },
   {
     name: "twitter:description",
-    content: descripttion,
+    content: defaultDescription,
   },
   {
     name: "twitter:image",

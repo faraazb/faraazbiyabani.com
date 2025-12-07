@@ -1,94 +1,83 @@
 @use "@styles/variables" as v;
 
 .contact {
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    .container {
-        width: 100%;
-        min-width: 65%;
-        max-width: 600px;
-    }
+  width: clamp(320px, 90%, 600px);
+  height: min-content;
 }
 
 .contact-form {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1.5rem;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  justify-content: center;
 }
 
 .form-item {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    label {
-        margin-bottom: 0.75rem;
-    }
+  label {
+    margin-bottom: 0.75rem;
+  }
 }
 
 .form-item.message {
-    min-width: 100%;
+  min-width: 100%;
 }
 
 .form-item {
+  > textarea,
+  input {
+    font-size: 14px;
+    outline: none;
+    background-color: var(--secondary);
+    border: 0.1rem solid var(--border-mono);
+    border-radius: 2px;
+  }
 
-    >textarea,
-    input {
-        font-size: 14px;
-        outline: none;
-        background-color: var(--secondary);
-        border: 0.1rem solid var(--border-mono);
-        border-radius: 2px;
-    }
+  > textarea:focus-visible,
+  input:focus-visible {
+    outline: 0.15rem solid light-dark(v.$cyan-200, v.$cyan-800);
+  }
 
-    >textarea:focus-visible,
-    input:focus-visible {
-        outline: 0.15rem solid light-dark(v.$cyan-200, v.$cyan-800);
-    }
+  > textarea {
+    min-height: 80px;
+  }
 
-    >textarea {
-        min-height: 80px;
-    }
-
-    >input {
-        min-height: 30px;
-    }
+  > input {
+    min-height: 30px;
+  }
 }
 
 .form-item.submit {
-    width: 140px;
-    justify-self: center;
+  width: 140px;
+  justify-self: center;
 }
 
-.form-item.submit>.accent-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 0.45rem;
+.form-item.submit > .accent-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.45rem;
 }
 
 .loader {
-    width: 18px;
-    height: 18px;
-    border: 2px dotted var(--foreground);
-    border-radius: 50%;
-    display: inline-block;
-    position: relative;
-    box-sizing: border-box;
-    animation: rotation 2s linear infinite;
+  width: 18px;
+  height: 18px;
+  border: 2px dotted var(--foreground);
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
 }
 
 @keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
 
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }

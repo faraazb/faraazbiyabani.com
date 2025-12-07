@@ -1,7 +1,7 @@
 import { Fragment } from "preact/jsx-runtime";
 import { useState, useEffect, useCallback } from "preact/hooks";
 import "./header.scss";
-import { Menu } from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Sun, Moon, Hamburger, FaraazBiyabani } from "@icons/index";
 import { setTheme, useTheme } from "src/store/theme";
 
@@ -73,133 +73,122 @@ export const Header = () => {
   };
 
   return (
-    <header id="nav-header" className={scrollDirection}>
-      <div className="logo">
-        <a
-          href="/"
-          id="logo-link"
-          draggable={false}
-          aria-label="Link to home page"
-        >
-          <FaraazBiyabani />
-        </a>
-      </div>
-      <div className="nav-links">
-        <button
-          title="Switch Theme"
-          className="nav-link icon-button"
-          onClick={setNextTheme}
-          tabIndex={0}
-        >
-          <SwitchThemeIcon />
-        </button>
-        <a href="/#about" className="nav-link">
-          About
-        </a>
-        <a href="/#projects" className="nav-link">
-          Projects
-        </a>
-        {/* <a href="/blog" className="nav-link">
-          Blog
-        </a>*/}
-        <a href="/resume" className="nav-link">
-          Resume
-        </a>
-        <a href="/contact" className="nav-link">
-          Contact
-        </a>
-      </div>
-      <Menu as={Fragment}>
-        {({ open }) => (
-          <>
-            <Menu.Button as={Fragment} tabIndex={0}>
+    <>
+      <header id="nav-header" className={scrollDirection}>
+        <Menu></Menu>
+        <div className="header__content">
+          <div className="logo">
+            <a
+              href="/"
+              id="logo-link"
+              draggable={false}
+              aria-label="Link to home page"
+            >
+              <FaraazBiyabani />
+            </a>
+          </div>
+          <div className="nav-links">
+            <button
+              title="Switch Theme"
+              className="nav-link icon-button"
+              onClick={setNextTheme}
+              tabIndex={0}
+            >
+              <SwitchThemeIcon />
+            </button>
+            <a href="/#about" className="nav-link">
+              About
+            </a>
+            <a href="/#projects" className="nav-link">
+              Projects
+            </a>
+            <a href="/blog" className="nav-link">
+              Blog
+            </a>
+            <a href="/resume" className="nav-link">
+              Resume
+            </a>
+            <a href="/contact" className="nav-link">
+              Contact
+            </a>
+          </div>
+          <Menu as={Fragment}>
+            <MenuButton as={Fragment} tabIndex={0}>
               <div className="nav-button">
                 <Hamburger />
               </div>
-            </Menu.Button>
-            {open && (
-              <div className="nav-menu">
-                <Menu.Items static className="nav-menu-items">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? "item-active" : ""
-                        } nav-menu-item icon-button`}
-                        onClick={setNextTheme}
-                        aria-label="Switch theme"
-                      >
-                        <SwitchThemeIcon />
-                        <span className="icon-button-label">Switch Theme</span>
-                      </button>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        className={`${
-                          active ? "item-active" : ""
-                        } nav-menu-item`}
-                        href={"/#about"}
-                      >
-                        About
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        className={`${
-                          active ? "item-active" : ""
-                        } nav-menu-item`}
-                        href={"/#projects"}
-                      >
-                        Projects
-                      </a>
-                    )}
-                  </Menu.Item>
-                  {/* <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        className={`${
-                          active ? "item-active" : ""
-                        } nav-menu-item`}
-                        href={"/blog"}
-                      >
-                        Blog
-                      </a>
-                    )}
-                  </Menu.Item>*/}
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        className={`${
-                          active ? "item-active" : ""
-                        } nav-menu-item`}
-                        href={"/resume"}
-                      >
-                        Resume
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        className={`${
-                          active ? "item-active" : ""
-                        } nav-menu-item`}
-                        href={"/contact"}
-                      >
-                        Contact
-                      </a>
-                    )}
-                  </Menu.Item>
-                </Menu.Items>
-              </div>
-            )}
-          </>
-        )}
-      </Menu>
-    </header>
+            </MenuButton>
+            <div className="nav-menu">
+              <MenuItems transition portal={true} className="nav-menu-items">
+                <MenuItem>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? "item-active" : ""
+                      } nav-menu-item icon-button`}
+                      onClick={setNextTheme}
+                      aria-label="Switch theme"
+                    >
+                      <SwitchThemeIcon />
+                      <span className="icon-button-label">Switch Theme</span>
+                    </button>
+                  )}
+                </MenuItem>
+                <MenuItem>
+                  {({ active }) => (
+                    <a
+                      className={`${active ? "item-active" : ""} nav-menu-item`}
+                      href={"/#about"}
+                    >
+                      About
+                    </a>
+                  )}
+                </MenuItem>
+                <MenuItem>
+                  {({ active }) => (
+                    <a
+                      className={`${active ? "item-active" : ""} nav-menu-item`}
+                      href={"/#projects"}
+                    >
+                      Projects
+                    </a>
+                  )}
+                </MenuItem>
+                <MenuItem>
+                  {({ active }) => (
+                    <a
+                      className={`${active ? "item-active" : ""} nav-menu-item`}
+                      href={"/blog"}
+                    >
+                      Blog
+                    </a>
+                  )}
+                </MenuItem>
+                <MenuItem>
+                  {({ active }) => (
+                    <a
+                      className={`${active ? "item-active" : ""} nav-menu-item`}
+                      href={"/resume"}
+                    >
+                      Resume
+                    </a>
+                  )}
+                </MenuItem>
+                <MenuItem>
+                  {({ active }) => (
+                    <a
+                      className={`${active ? "item-active" : ""} nav-menu-item`}
+                      href={"/contact"}
+                    >
+                      Contact
+                    </a>
+                  )}
+                </MenuItem>
+              </MenuItems>
+            </div>
+          </Menu>
+        </div>
+      </header>
+    </>
   );
 };

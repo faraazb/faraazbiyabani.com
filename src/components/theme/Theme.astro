@@ -1,0 +1,12 @@
+<script>
+  import { theme } from "src/store/theme";
+
+  const setTheme = () =>
+    theme.subscribe((value: string) => {
+      document.documentElement.className = value;
+    });
+
+  setTheme();
+
+  document.addEventListener("astro:after-swap", setTheme);
+</script>

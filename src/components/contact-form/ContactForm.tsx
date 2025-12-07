@@ -66,16 +66,18 @@ export function ContactForm() {
               name="name"
               required
               placeholder="Your name"
+              autoComplete="name"
             />
           </div>
           <div class="form-item input-field">
-            <label for="email">E-mail</label>
+            <label for="email">Email</label>
             <input
               id="email"
               type="email"
               name="email"
               required
               placeholder="Your email"
+              autoComplete="email"
             />
           </div>
           <div class="form-item input-field message">

@@ -1,4 +1,5 @@
 @use "@styles/include-media" as query;
+@use "../../styles/constants" as constants;
 
 #nav-header {
   //width: 100%;
@@ -16,10 +17,7 @@
     --lr-margins: 18%;
   }
   grid-template-rows: 80px 1fr;
-  grid-template-columns:
-    [mr] var(--lr-margins) [logo] minmax(150px, 720px) [nav] minmax(auto, 720px)
-    [ml] var(--lr-margins);
-  //centers item inline - wrt row
+  grid-template-columns: 1fr [header] constants.$content-clamp 1fr;
   align-items: center;
   justify-content: center;
   backdrop-filter: saturate(180%) blur(20px);
@@ -31,6 +29,11 @@
     rgba(0, 0, 0, 0.05) 0 1px 24px 0,
     rgba(0, 0, 0, 0.08) 0 0 0 1px;
   z-index: 2;
+}
+
+.header__content {
+  grid-column-start: header;
+  display: grid;
 }
 
 #nav-header.scroll-up,
@@ -55,10 +58,6 @@
   }
 }
 
-.logo {
-  grid-column-start: logo;
-}
-
 #logo-link {
   display: inline-block;
   height: 1.5rem;
@@ -71,7 +70,7 @@
 }
 
 .nav-links {
-  grid-column-start: nav;
+  grid-column-start: logo;
   display: flex;
   column-gap: 20px;
   align-items: center;
@@ -115,7 +114,14 @@
   }
 }
 
-.nav-menu {
+.nav-menu-items {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  padding: 4% 0 40px 8%;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
   box-shadow:
     rgba(0, 0, 0, 0.05) 0 1px 24px 0,
     rgba(0, 0, 0, 0.08) 0 0 0 1px;
@@ -125,24 +131,26 @@
   background-color: var(--header-bg);
   transition:
     background-color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1),
+    transform 450ms cubic-bezier(0.28, 0.11, 0.32, 1),
+    opacity 250ms ease,
+    padding 250ms ease,
     top 500ms ease-in-out;
   z-index: 1;
-  position: absolute;
+  position: fixed;
   top: 80px;
+  left: 0;
   width: 100%;
-  padding: 4% 0 40px 8%;
-  // padding-left: 8%;
-  // padding-bottom: 40px;
-}
 
-.nav-menu.closed {
-  display: none;
-}
-
-.nav-menu-items {
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
+  &[data-closed] {
+    padding: 0 0 0 8%;
+    opacity: 0;
+    transform: translateY(-120%);
+    pointer-events: none;
+    transition:
+      transform 300ms ease-in,
+      opacity 200ms ease-in,
+      padding 200ms ease-in;
+  }
 }
 
 .nav-menu-item {

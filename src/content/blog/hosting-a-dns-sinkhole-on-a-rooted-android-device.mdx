@@ -1,5 +1,9 @@
 ---
-title: "Hosting a DNS sinkhole on a rooted Android device"
+title: "Hosting a DNS Sinkhole on a Rooted Android Device"
+description: "Android running Linux running Pi-hole. It's basically Inception, but for blocking stuff network wide. The bottomline is to understand the effort in self-hosting on an Android device."
+image: "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihole_on_android.png"
+updatedAt: 2025-12-07
+publishedAt: 2025-12-07
 ---
 import { Callout } from "@components/callout";
 import { Icon } from "astro-icon/components";
@@ -8,12 +12,14 @@ import linuxDeployAlpineConfig from "../../assets/images/blog/running-pihole-on-
 import linuxDeployAlpineStartup from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/linux_deploy_alpine_startup.png"
 import piholeDashboard from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihole_dashboard.png"
 import adguardQueryLog from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/adguard_domain_details.png"
+import piholeOnAndroid from "../../assets/images/blog/running-pihole-on-a-rooted-android-device/pihole_on_android_without_title.png"
 
+<Picture src={piholeOnAndroid} layout="constrained" style="max-width: 100%; height: auto;" alt="A robot which represents an Android device filtering DNS requests represented by boxes on a conveyor belt using a scanning device which represents the Pi-hole software"/>
 
 <section>
-## Some context...
+## Some background...
 
-I switched to a new phone a year ago and since then my old phone had just been lying around. Since it is a rooted Android device with 6 GBs of RAM and a decent CPU, I always thought of using it for self-hosting. 
+I switched to a new phone a year ago and since then my old phone had just been lying around. Since it is a rooted Android device, I always thought of using it for self-hosting. 
 
 On several ocassions I had come across apps such as [LinuxDeploy](https://github.com/meefik/linuxdeploy) which make it possible to run a Linux distribution in a chroot environment. LinuxDeploy can also auto-configure SSH and GUI access to the chroot jailed Linux distro. With a Linux distro, we can self-host a lot of different software such as media centers, password managers, and... DNS sinkholes.
 
@@ -23,7 +29,7 @@ A DNS sinkhole is a software that helps block a list of domains, typically the o
 
 It is also common for such software to provide options to customize behaviour per client, display DNS query statistics (top blocked domains, percentage of queries blocked, per-client statistics), etc. through a web-based admin interface.
 
-Note that a DNS sinkhole is quite limited in what it can do compared to a content filtering software which can manipulate webpage content through rules. Ads served through the same domain (or different routes) as the actual content cannot be blocked since DNS works with FQDNs (fully qualified domain names). While server-oriented solutions which use an MITM proxy exist (see Privoxy and Privaxy), I think client side browser extensions are simpler and practical.
+Note that a DNS sinkhole is quite limited in what it can do compared to a content filtering software which can manipulate webpage content through rules. Ads served through the same domain (e.g. using different routes) as the actual content cannot be blocked since DNS works with FQDNs (fully qualified domain names). While server-oriented solutions which use an MITM proxy exist (see Privoxy and Privaxy), I think client side browser extensions are simpler and practical.
 
 Some popular DNS sinkholes are Pihole, AdGuard Home and Blocky, with Pihole being the most common one. So, it's the first one I decided to setup.
 </section>
@@ -62,11 +68,11 @@ These are the changed configuration values for the LinuxDeploy profile.
 
 <div style={{display: "flex", gap: '1.5rem'}}>
     <figure style="display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0">
-        <Picture src={linuxDeployAlpineConfig} layout="constrained" style="max-width: 100%; width: auto; height: auto; max-height: 550px;" alt="Image"/>
+        <Picture src={linuxDeployAlpineConfig} layout="constrained" style="max-width: 100%; width: auto; height: auto; max-height: 550px;" alt="Screenshot from Android device showing the profile configuration screen in LinuxDeploy app"/>
         <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>LinuxDeploy profile configuration</figcaption>
     </figure>
     <figure style="display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0">
-        <Picture src={linuxDeployAlpineStartup} layout="constrained" style="max-width: 100%; width: auto; height: auto; max-height: 550px;" alt="Image"/>
+        <Picture src={linuxDeployAlpineStartup} layout="constrained" style="max-width: 100%; width: auto; height: auto; max-height: 550px;" alt="Another screenshot showing the Linux distro startup logs"/>
         <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>Startup</figcaption>
     </figure>
 </div>
@@ -122,7 +128,7 @@ Here's the updated configuration:
 I visited `http://192.168.0.126/admin` and logged into the Pihole admin interface. There I added StevenBlack's host lists as the first list and updated the Gravity database. Then I configured my phone to point to the Android device's static IP and opened a few apps and websites.
 
 <figure style="margin: 1.2rem 0">
-    <Picture src={piholeDashboard} layout="constrained" style="max-width: 100%; height: auto;" alt="Image"/>
+    <Picture src={piholeDashboard} layout="constrained" style="max-width: 100%; height: auto;" alt="Screenshot from a browser on a computer showing the Pi-hole dashboard"/>
     <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>Pi-hole dashboard</figcaption>
 </figure>
 
@@ -145,7 +151,7 @@ Before I began, I stopped the pihole service to avoid any potential issues. I ob
 To run it as a service, I created an init file at `/etc/init.d/AdGuardHome` to start the service at startup as described [here](https://vladislav.xyz/posts/adguard-on-alpine-linux/). The installation was complete. Since it comes with a default upstream DNS server, and a default block list configured, it starts working out of the box.
 
 <figure style="margin: 1.2rem 0">
-    <Picture src={adguardQueryLog} layout="constrained" style="max-width: 100%; height: auto;" alt="Image"/>
+    <Picture src={adguardQueryLog} layout="constrained" style="max-width: 100%; height: auto;" alt="Screenshot from a browser on a computer showing the AdGuard Home query log"/>
     <figcaption style={{fontStyle: 'italic', textAlign: 'center'}}>AdGuard Home query log</figcaption>
 </figure>
 

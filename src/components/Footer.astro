@@ -5,193 +5,80 @@ const ICON_SIZE = 20;
 ---
 
 <footer id="footer">
-  <div class="footer-nav-links">
-    <Link href={"/#about"} type="secondary">About</Link>
-    <Link href={"/#projects"} type="secondary">Projects</Link>
-    <Link href={"/resume"} type="secondary">Resume</Link>
-    <Link href={"/contact"} type="secondary">Contact</Link>
-  </div>
-  <div class="contact-links">
-    <Link
-      type="icon"
-      icon={"ph:github-logo"}
-      aria-label="GitHub"
-      href="https://github.com/faraazb"
-      target="_blank"
-      iconProps={{ size: ICON_SIZE }}
-    />
-    <Link
-      type="icon"
-      icon={"ph:linkedin-logo"}
-      aria-label="LinkedIn"
-      href="https://linkedin.com/in/faraazb"
-      target="_blank"
-      iconProps={{ size: ICON_SIZE }}
-    />
-    <Link
-      type="icon"
-      icon={"ph:x-logo"}
-      aria-label="X"
-      href="https://x.com/mfaraazb"
-      target="_blank"
-      iconProps={{ size: ICON_SIZE }}
-    />
+  <div class="footer__content">
+    <div class="footer-nav-links">
+      <Link href={"/#about"} type="secondary">About</Link>
+      <Link href={"/#projects"} type="secondary">Projects</Link>
+      <Link href={"/resume"} type="secondary">Resume</Link>
+      <Link href={"/contact"} type="secondary">Contact</Link>
+    </div>
+    <div class="contact-links">
+      <Link
+        type="icon"
+        icon={"ph:github-logo"}
+        aria-label="GitHub"
+        href="https://github.com/faraazb"
+        target="_blank"
+        iconProps={{ size: ICON_SIZE }}
+      />
+      <Link
+        type="icon"
+        icon={"ph:linkedin-logo"}
+        aria-label="LinkedIn"
+        href="https://linkedin.com/in/faraazb"
+        target="_blank"
+        iconProps={{ size: ICON_SIZE }}
+      />
+      <Link
+        type="icon"
+        icon={"ph:x-logo"}
+        aria-label="X"
+        href="https://x.com/mfaraazb"
+        target="_blank"
+        iconProps={{ size: ICON_SIZE }}
+      />
+    </div>
   </div>
 </footer>
 
 <style lang="scss">
   @use "@styles/include-media" as query;
   @use "@styles/variables" as v;
+  @use "../styles/constants" as constants;
 
   #footer {
     border-top: thin dashed light-dark(v.$neutral-950, v.$neutral-400);
     background-color: var(--secondary);
-    --lr-margins: 12%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    //centers item inline - wrt row
-    align-items: center;
-    justify-content: space-between;
     backdrop-filter: saturate(180%) blur(20px);
-    @include query.media("<tablet") {
-      --lr-margins: 8%;
-      justify-content: center;
+    display: grid;
+    grid-template-areas: "ml content mr";
+    grid-template-rows: 100px 1fr;
+    grid-template-columns: 1fr constants.$content-clamp 1fr;
+    @include query.media("<=tablet") {
+      padding: 1.75rem;
     }
-    @include query.media(">=1440px") {
-      --lr-margins: 18%;
-    }
-    padding: 40px var(--lr-margins);
   }
 
-  #footer > * {
-    @include query.media("<=phone") {
-      margin-left: 40px;
-      margin-right: 40px;
+  .footer__content {
+    grid-area: content;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    @include query.media("<=tablet") {
+      align-items: center;
+      justify-items: center;
     }
   }
 
   .footer-nav-links {
-    grid-column: navigation;
     display: flex;
     column-gap: 20px;
-  }
-
-  #bye {
-    color: var(--foreground);
-    margin-bottom: 20px;
-    font-size: 1.1rem;
   }
 
   .contact-links {
     display: flex;
     flex-direction: row;
-    column-gap: 20px;
+    column-gap: 1.75rem;
     justify-content: end;
-
-    .link--icon .icon {
-      width: 20px;
-    }
-  }
-
-  .contact-link svg.linkedin {
-    position: relative;
-    bottom: 3px;
-  }
-
-  .footnote {
-    color: var(--foreground);
-    text-align: center;
-    font-size: 1.1rem;
-  }
-
-  .contact-container {
-    width: 45%;
-    @include query.media("<=phone") {
-      width: 90%;
-    }
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 15px;
-    margin-bottom: 60px;
-  }
-
-  .contact-form {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 20px;
-    row-gap: 10px;
-    justify-content: center;
-  }
-
-  .form-item {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
-  }
-
-  .form-item.input-field {
-    min-width: 250px;
-    flex-grow: 1;
-  }
-
-  .form-item.message {
-    min-width: 100%;
-  }
-
-  .form-item {
-    > textarea,
-    input {
-      font-size: 14px;
-      -webkit-appearance: none;
-      outline: none;
-      background-color: var(--secondary);
-      border: 0.1rem solid var(--border-primary);
-      border-radius: 2px;
-    }
-    > textarea:focus-visible,
-    input:focus-visible {
-      outline: 0.15rem solid var(--cyan-10);
-    }
-    > textarea {
-      min-height: 80px;
-    }
-    > input {
-      min-height: 30px;
-    }
-  }
-
-  .form-item.submit {
-    width: 140px;
-    justify-self: center;
-  }
-
-  .form-item.submit > .accent-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 0.45rem;
-  }
-
-  .loader {
-    width: 25px;
-    height: 25px;
-    border: 3px dotted var(--foreground);
-    border-radius: 50%;
-    display: inline-block;
-    position: relative;
-    box-sizing: border-box;
-    animation: rotation 2s linear infinite;
-  }
-
-  @keyframes rotation {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
   }
 </style>

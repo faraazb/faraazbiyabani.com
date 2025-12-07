@@ -1,0 +1,29 @@
+---
+import Root from "./Root.astro";
+---
+
+<Root>
+  <slot name="head" slot="head" />
+  <div class="layout">
+    <main class="content" transition:animate="fade">
+      <slot />
+    </main>
+  </div>
+</Root>
+
+<style lang="scss">
+  @use "@styles/main";
+  @use "@styles/include-media" as query;
+  @use "../styles/constants" as constants;
+  .layout {
+    flex-grow: 1;
+    display: grid;
+    grid-template-areas: "ml content mr";
+    grid-template-columns: 1fr constants.$content-clamp 1fr;
+  }
+
+  .content {
+    grid-area: content;
+    flex-grow: 1;
+  }
+</style>

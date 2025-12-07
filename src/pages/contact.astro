@@ -1,9 +1,23 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { ContactForm } from "@components/contact-form";
+import CommonSeo from "@seo/Common.astro";
+
+const title = "Contact - Faraaz Biyabani";
 ---
 
-<Layout title="Contact - Faraaz Biyabani">
+<Layout>
+  <Fragment slot="head">
+    <title>{title}</title>
+    <CommonSeo />
+  </Fragment>
   <ContactForm client:load />
   <script is:inline src="https://s.pageclip.co/v1/pageclip.js"></script>
 </Layout>
+
+<style lang="scss" is:global>
+  .content {
+    display: grid;
+    place-items: center;
+  }
+</style>

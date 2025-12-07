@@ -55,7 +55,7 @@ export function expressiveCodeCursor() {
             line.editText(
               cursorIndex,
               cursorIndex + CURSOR_PLACEHOLDER.length,
-              CURSOR_MARKER
+              CURSOR_MARKER,
             );
 
             searchStart = cursorIndex + CURSOR_MARKER.length;
@@ -74,7 +74,7 @@ export function expressiveCodeCursor() {
           if (!node.value.includes(CURSOR_MARKER)) return;
 
           const segments = node.value.split(CURSOR_MARKER);
-          const newNodes = [];
+          const newNodes: any[] = [];
 
           segments.forEach((segment: string, segmentIndex: number) => {
             if (segment.length) {
@@ -86,7 +86,7 @@ export function expressiveCodeCursor() {
                 h("span.ec-cursor", {
                   "aria-hidden": "true",
                   role: "presentation",
-                })
+                }),
               );
             }
           });
@@ -117,4 +117,3 @@ export function expressiveCodeCursor() {
     },
   });
 }
-

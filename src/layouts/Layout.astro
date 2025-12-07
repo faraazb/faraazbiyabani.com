@@ -1,133 +1,32 @@
 ---
-import { ClientRouter } from "astro:transitions";
-import { Header } from "@components/header";
-import Footer from "@components/Footer.astro";
-import CommonSeo from "@seo/Common.astro";
-import { Font } from "astro:assets";
-
-interface Props {
-  title?: string;
-}
-
-const { title = "Faraaz Biyabani" } = Astro.props;
-const isProduction = import.meta.env.PROD;
+import Root from "./Root.astro";
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    {isProduction ? <link rel="sitemap" href="/sitemap-index.xml" /> : null}
-    <title>{title}</title>
-    <CommonSeo title={title} />
-    <ClientRouter />
-    <Font cssVariable="--font-inter" />
-  </head>
-  <body>
-    <div class="root">
-      <Header client:only="preact" transition:persist />
-      <div class="layout">
-        <main class="content" transition:animate="fade">
-          <slot />
-        </main>
-      </div>
-      <Footer />
-    </div>
-    <style lang="scss" is:global>
-      @use "@styles/main";
-      // @use "@styles/base";
-      @use "@styles/include-media" as query;
-
-      code {
-        font-family:
-          Menlo,
-          Monaco,
-          Lucida Console,
-          Liberation Mono,
-          DejaVu Sans Mono,
-          Bitstream Vera Sans Mono,
-          Courier New,
-          monospace;
-      }
-
-      .root {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .layout {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        // added for margins on larger displays
-        //align-items: center;
-        height: 100%;
-      }
-
-      header {
-        width: 100%;
-      }
-
-      .content {
-        // align-self: center;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        // align-items: center;
-        margin: 0 12%;
-        @include query.media("<tablet") {
-          margin: 0 8%;
-        }
-        @include query.media(">=1440px") {
-          margin: 0 18%;
-        }
-        @include query.media(">1920px") {
-          max-width: 1440px;
-        }
-      }
-
-      footer {
-        position: sticky;
-        top: 100vh;
-        min-height: 10%;
-        width: 100%;
-        flex-shrink: 0;
-      }
-    </style>
-    <script>
-      import { theme } from "src/store/theme";
-
-      const setTheme = () =>
-        theme.subscribe((value: string) => {
-          document.documentElement.className = value;
-        });
-
-      setTheme();
-
-      document.addEventListener("astro:after-swap", setTheme);
-    </script>
-    {
-      isProduction ? (
-        <>
-          <script
-            is:inline
-            async
-            defer
-            src="https://simple.faraazbiyabani.me/latest.js"
-          />
-          <noscript>
-            <img
-              src="https://simple.faraazbiyabani.me/noscript.gif"
-              alt=""
-              referrerpolicy="no-referrer-when-downgrade"
-            />
-          </noscript>
-        </>
-      ) : null
+<Root>
+  <slot name="head" slot="head" />
+  <div class="layout">
+    <main class="content" transition:animate="fade">
+      <slot />
+    </main>
+  </div>
+  <style lang="scss">
+    @use "@styles/main";
+    @use "@styles/include-media" as query;
+    @use "../styles/constants" as constants;
+    .layout {
+      flex-grow: 1;
+      display: grid;
+      grid-template-areas:
+        ". . ."
+        "ml content mr"
+        ". . .";
+      grid-template-rows: constants.$content-vertical-clamp 1fr constants.$content-vertical-clamp;
+      grid-template-columns: 1fr constants.$content-clamp 1fr;
     }
-  </body>
-</html>
+
+    .content {
+      grid-area: content;
+      flex-grow: 1;
+    }
+  </style>
+</Root>

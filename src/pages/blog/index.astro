@@ -1,22 +1,38 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import CommonSeo from "@seo/Common.astro";
 
 const blogEntries = await getCollection("blog");
 const blogPostLinks = blogEntries.map((entry) => ({
   title: entry.data.title,
   slug: entry.id,
+  publishedAt: entry.data.publishedAt.toISOString(),
+  publishedDate: entry.data.publishedAt.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }),
 }));
+const title = "Blog • Faraaz Biyabani";
+const description = "Blog by Faraaz Biyabani";
 ---
 
-<Layout title={"Blog - Faraaz Biyabani"}>
+<Layout>
+  <Fragment slot="head">
+    <title>{title}</title>
+    <CommonSeo title={title} description={description} />
+  </Fragment>
   <div>
-    <h1>Blogs</h1>
+    <h1>Blog</h1>
     <ul>
       {
         blogPostLinks.map((post) => (
           <li>
-            <a href={`/blog/${post.slug}`}>{post.title}</a>
+            <div class="post">
+              <a href={`/blog/${post.slug}`}>{post.title}</a>
+              <time datetime={post.publishedAt}>{post.publishedDate}</time>
+            </div>
           </li>
         ))
       }
@@ -24,27 +40,28 @@ const blogPostLinks = blogEntries.map((entry) => ({
   </div>
 </Layout>
 
-<style lang="scss" is:global>
-  @use "@styles/include-media" as query;
+<style lang="scss">
+  .post {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
-  .content {
-    margin: 6% 18%;
-
-    @include query.media("<tablet") {
-      margin: 6% 8%;
-    }
-    @include query.media(">=1440px") {
-      margin: 6% 24%;
+    a {
+      font-weight: 600;
     }
 
-    a:not([href^="#"]) {
-      color: var(--link);
-      text-decoration: none;
-      transition: all 0.2s ease-in-out;
+    time {
+      font-size: 0.9rem;
     }
+  }
 
-    a:not([href^="#"]):hover {
-      text-decoration: underline;
-    }
+  a:not([href^="#"]) {
+    color: var(--link);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+  }
+
+  a:not([href^="#"]):hover {
+    text-decoration: underline;
   }
 </style>

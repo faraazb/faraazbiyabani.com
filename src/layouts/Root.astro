@@ -1,0 +1,44 @@
+---
+import Footer from "@components/Footer.astro";
+import { Analytics } from "@components/analytics";
+import { Header } from "@components/header";
+import { Theme } from "@components/theme";
+import { Font } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
+
+const isProduction = import.meta.env.PROD;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {isProduction ? <link rel="sitemap" href="/sitemap-index.xml" /> : null}
+    <ClientRouter />
+    <Font cssVariable="--font-inter" />
+    <slot name="head" />
+  </head>
+  <body>
+    <div class="root">
+      <Header client:only="preact" transition:persist />
+      <slot />
+      <Footer transition:persist />
+    </div>
+    <style lang="scss" is:global>
+      @use "@styles/main";
+      @use "@styles/include-media" as query;
+      @use "../styles/constants" as constants;
+
+      .root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+    <Analytics />
+    <Theme />
+  </body>
+</html>
