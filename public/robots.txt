@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://faraazbiyabani.me/sitemap-index.xml
+Sitemap: https://faraazbiyabani.com/sitemap-index.xml

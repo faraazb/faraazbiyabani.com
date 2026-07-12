@@ -3,9 +3,10 @@ import { achievements } from "@sections/achievements/achievements.schema";
 import { experience } from "@sections/experience/experience.schema";
 import { project } from "@sections/projects/project.schema";
 import { skills } from "@sections/skills/skills.schema";
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from "astro/loaders";
-import { blogPost } from "./pages/blog/blog-post.schema";
+import { blogPost } from "./schemas/blog-post.schema";
 
 const pages = defineCollection({
   loader: glob({ pattern: "*.json", base: "./src/content/pages" }),

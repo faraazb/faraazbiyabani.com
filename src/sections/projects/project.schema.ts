@@ -1,4 +1,5 @@
-import { z, type SchemaContext } from "astro:content";
+import { z } from "astro/zod";
+import type { SchemaContext } from "astro:content";
 import { ZodAccents } from "src/types";
 
 export const project = ({ image }: SchemaContext) =>

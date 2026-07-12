@@ -9,21 +9,19 @@ import { expressiveCodeCursor, expressiveCodeTerminal } from "./src/utils";
 
 // https://astro.build/config
 export default defineConfig({
-  experimental: {
-    fonts: [
-      {
-        name: "Inter",
-        cssVariable: "--font-inter",
-        provider: fontProviders.fontsource(),
-        // Specify weights that are actually used
-        // weights: [400, 500, 600, 700],
-        // Specify styles that are actually used
-        // styles: ["normal"],
-        // Download only font files for characters used on the page
-        // subsets: ["latin", "cyrillic"],
-      },
-    ],
-  },
+  fonts: [
+    {
+      name: "Inter",
+      cssVariable: "--font-inter",
+      provider: fontProviders.fontsource(),
+      // Specify weights that are actually used
+      // weights: [400, 500, 600, 700],
+      // Specify styles that are actually used
+      // styles: ["normal"],
+      // Download only font files for characters used on the page
+      // subsets: ["latin", "cyrillic"],
+    },
+  ],
   integrations: [
     preact({
       compat: true,
@@ -46,5 +44,26 @@ export default defineConfig({
     }),
     mdx(),
   ],
-  site: "https://faraazbiyabani.me",
+  site: "https://faraazbiyabani.com",
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // Vite 8 dropped tsconfig `paths` resolution for Sass @use/@import.
+          // Map the `@styles/` alias back to src/styles and let Sass resolve partials.
+          importers: [
+            {
+              findFileUrl(url) {
+                if (!url.startsWith("@styles/")) return null;
+                return new URL(
+                  `./src/styles/${url.slice("@styles/".length)}`,
+                  import.meta.url,
+                );
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
 });
